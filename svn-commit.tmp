@@ -1,0 +1,21 @@
+
+--This line, and those below, will be ignored--
+
+M    src/main/java/com/snapdeal/controller/CourierController.java
+M    src/main/java/com/snapdeal/controller/RtvController.java
+M    src/main/java/com/snapdeal/entity/InventoryHistory.java
+M    src/main/java/com/snapdeal/entity/RtvSheet.java
+M    src/main/java/com/snapdeal/entity/ShippingLocation.java
+M    src/main/java/com/snapdeal/service/CourierServiceImpl.java
+M    src/main/java/com/snapdeal/service/ShippingService.java
+M    src/main/java/com/snapdeal/service/ShippingServiceImpl.java
+M    src/main/java/com/snapdeal/service/TrackingNumbersService.java
+M    src/main/java/com/snapdeal/service/TrackingNumbersServiceImpl.java
+M    src/main/webapp/Courier/trackingNumbers.jsp
+M    src/main/webapp/ICARules/search.jsp
+M    src/main/webapp/Rtv/dispatch.jsp
+M    src/main/webapp/Rtv/print.jsp
+M    src/main/webapp/WEB-INF/tags/genericpage.tag
+M    src/main/webapp/framework-resource.jsp
+M    src/main/webapp/home.jsp
+M    src/main/webapp/sidebar.jsp
