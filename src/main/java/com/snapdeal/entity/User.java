@@ -32,8 +32,11 @@ public class User extends BaseEntity implements UserDetails{
 	@Column(name="enabled")
 	private boolean enabled = true;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Roles> userRoles;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Warehouse> userWarehouse;
 	
 	public List<Roles> getUserRoles() {
 		return userRoles;
@@ -94,5 +97,13 @@ public class User extends BaseEntity implements UserDetails{
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
+	}
+
+	public void setUserWarehouse(List<Warehouse> userWarehouse) {
+		this.userWarehouse = userWarehouse;
+	}
+
+	public List<Warehouse> getUserWarehouse() {
+		return userWarehouse;
 	}
 }

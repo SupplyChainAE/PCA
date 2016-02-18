@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
+import com.snapdeal.dto.ParameterWeight;
 import com.snapdeal.dto.ParameterPrice;
 import com.snapdeal.dto.Priority;
 import com.snapdeal.dto.Request;
@@ -709,7 +710,65 @@ public class Dao {
 
 		
 	}
+
+
+	public List<ParameterWeight> getParameterWeight() {
+		Connection connection = null;
+		Statement statement = null;
+		List<ParameterWeight> prList =new ArrayList<ParameterWeight>();
+		
+		try{
+			connection = (Connection) dataSourceLocal.getConnection();
+			statement = (Statement) connection.createStatement();
+			String query = "Select parameter,weight,name from parameterWeight";
+			ResultSet resultSet = statement.executeQuery(query);
+			while (resultSet.next()){
+				ParameterWeight pr = new ParameterWeight();
+				pr.setParameter(resultSet.getString("parameter"));
+				pr.setWeight(resultSet.getDouble("weight"));
+				pr.setName(resultSet.getString("name"));
+				prList.add(pr);
+			}
+		}
+		catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+			//Handle errors for Class.forName
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return prList;		
+	}
 	
-	
+	public void updateParameterWeight(String parameter,Double weight) {
+
+		Connection connection = null;
+		Statement statement = null;
+		try{
+			connection = (Connection) dataSourceLocal.getConnection();
+			statement = (Statement) connection.createStatement();
+			String query = "Update  parameterWeight set weight = " + weight + " where parameter = '"+ parameter +"'";
+			statement.executeUpdate(query);
+		}
+		catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+			//Handle errors for Class.forName
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+					e.printStackTrace();
+			}
+		}
+	}
 }
 	

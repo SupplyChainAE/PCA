@@ -7,6 +7,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.hibernate.Hibernate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService{
 			if(userList != null && userList.size() > 0)
 			{
 				dbUser = userList.get(0);
-//				Hibernate.initialize(dbUser.getUserWarehouses());	
+				Hibernate.initialize(dbUser.getUserRoles());	
 			}
 			
 		}
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User findUserById(Long id) {
 		User user = entityDao.findById(User.class, id);
-//		Hibernate.initialize(user.getUserWarehouses());
+//		Hibernate.initialize(user.getUserRoles());
 		return user;
 	}
 

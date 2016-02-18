@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.snapdeal.component.SessionDetails;
 import com.snapdeal.dao.Dao;
+import com.snapdeal.service.MailService;
 
 @Controller
 

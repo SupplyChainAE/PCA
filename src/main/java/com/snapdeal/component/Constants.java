@@ -22,4 +22,6 @@ public class Constants {
 	public static final String HISTORY_ACTION_PICKLIST = "Picking Initiated.";
 	public static final String HISTORY_ACTION_RTV_DIRECT = "Direct RTV selected after scanning.";
 	public static final String HISTORY_ACTION_MISSING_PICKLIST = "Not brought in Picklist. Marked in warehouse.";
+
+	
 }

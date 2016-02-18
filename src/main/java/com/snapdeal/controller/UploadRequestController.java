@@ -26,6 +26,7 @@ import com.snapdeal.component.SessionDetails;
 import com.snapdeal.dao.Dao;
 import com.snapdeal.dto.FileBean;
 import com.snapdeal.entity.Courier;
+import com.snapdeal.entity.Warehouse;
 import com.snapdeal.service.CourierService;
 import com.snapdeal.service.WarehouseService;
 
@@ -160,14 +161,18 @@ public class UploadRequestController {
 							response.getWriter().write(errorLine);
 							error1=1;
 						}	
-						else{
-							if (warehouseService.checkCode(data1[2].trim())){
+						else if (warehouseService.checkCode(data1[2].trim())){
 								errorLine = "Warehouse Code is Invalid : Line No "+ counter +"\n";
 								response.getWriter().write(errorLine);
 								error1=1;
 							}
-							
-						}
+						else if(!checkWarehouseForUser(data1[2].trim()))
+						{
+							errorLine = "Warehouse Code is Not Mapped to User : Line No "+ counter +"\n";
+							response.getWriter().write(errorLine);
+							error1=1;
+						}	
+						
 
 						if (data1[4].equals("")){
 							errorLine = "Courier Code is blank : Line No "+ counter +"\n";
@@ -412,6 +417,23 @@ public class UploadRequestController {
 		FileBean newFile = new FileBean();
 		map.put("fileData", newFile);
 	}
+
+
+	private boolean checkWarehouseForUser(String warehouseCode) {
+		
+		Warehouse warehouse = warehouseService.getWarehouseByCode(warehouseCode);
+		if(warehouse != null)
+		{
+			if(sessionDetails.getSessionUser().getUserWarehouse().contains(warehouse))
+				return true;
+			else
+				return false;
+		}
+		else 
+			return false;
+	}
+
+
 
 
 	@RequestMapping("/downloadTemplate")

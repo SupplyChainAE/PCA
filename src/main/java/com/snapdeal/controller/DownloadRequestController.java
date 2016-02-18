@@ -1,6 +1,5 @@
 package com.snapdeal.controller;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -52,7 +51,11 @@ public class DownloadRequestController {
 	@RequestMapping(value="/downloadRequest")
 	public String createRequest( ModelMap map){
 //		map.put("name", sessionDetails.getSessionUser().getUsername());
-		List<Warehouse> warehouseList = warehouseService.getAllWarehouse();
+		List<Warehouse> warehouseList = sessionDetails.getSessionUser().getUserWarehouse();
+//		for(Warehouse warehouse : warehouseList)
+//			if(!warehouse.isEnabled())
+//				warehouseList.remove(warehouse);
+		System.out.println(warehouseList);
 		List<Courier> courierList = courierService.getEnabledCourier();
 		
 		map.put("warehouse", warehouseList);
@@ -66,7 +69,11 @@ public class DownloadRequestController {
 	public String getRequest(@ModelAttribute("sellerCode") String sellerCode,@ModelAttribute("status") String status, @ModelAttribute("dateRange") String dateRange,
 			@RequestParam(value="courier",required=false)Long courierId,@RequestParam(value="warehouse",required=false)Long warehouseId, ModelMap map) throws ParseException{
 		
-		List<Warehouse> warehouseList = warehouseService.getEnabledWarehouses();
+		List<Warehouse> warehouseList = sessionDetails.getSessionUser().getUserWarehouse();
+		for(Warehouse warehouse : warehouseList)
+			if(!warehouse.isEnabled())
+				warehouseList.remove(warehouse);
+		
 	    String conditions = downloadService.generateDownloadConditions(sellerCode, status, dateRange, courierId, warehouseId);
 	    List<Courier> courierList = courierService.getEnabledCourier();
 	    List<Request> requestList = localDao.getRequestData(conditions);

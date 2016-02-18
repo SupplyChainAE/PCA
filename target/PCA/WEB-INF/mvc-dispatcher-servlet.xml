@@ -27,7 +27,7 @@
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/PMT	" />
 		<property name="username" value="root" />
-		<property name="password" value="5HnagXUN" /> 
+		<property name="password" value="Hash33##" /> 
 		<!-- 5HnagXUN -->
 	</bean>
 	<bean id="emfLocal"
@@ -94,5 +94,17 @@
       </set>
     </property>
   </bean>
-
+  
+<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="email-smtp.us-east-1.amazonaws.com" />
+        <property name="port" value="587" />
+        <property name="username" value="AKIAJ3Y4B5MIJA4BRENA" />
+        <property name="password" value="Aio295LL78cM0B9c/LcLB8gFdLus+cqN8laFacuKx7Gk"></property>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+    </bean>
 </beans>

@@ -19,6 +19,7 @@ public interface WarehouseService {
 	public boolean checkName(String warehouseName);
 	public boolean checkCode(String warehouseCode);
 	public Long getWarehouseIdByCode(String Code);
+	public Warehouse getWarehouseByCode(String warehouseCode);
 	
 	
 //	public void saveOrupdateSkuType(SkuType skuType);

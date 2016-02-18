@@ -110,6 +110,19 @@ public class WarehouseServiceImpl implements WarehouseService {
 		List<Warehouse> whList = query.getResultList();
 		return whList;
 	}
+
+	@Override
+	public Warehouse getWarehouseByCode(String warehouseCode) {
+		EntityManager entityManager = entityDao.getEntityManager();
+		Query query = entityManager.createQuery("Select warehouse from Warehouse warehouse where " +
+		"warehouse.code = :code");
+		query.setParameter("code", warehouseCode);
+		List<Warehouse> list = query.getResultList();
+		if(list.size() > 0)
+			return list.get(0);
+		else
+			return null;
+	}
 	
 	
 }

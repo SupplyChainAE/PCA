@@ -1,7 +1,10 @@
 package com.snapdeal.service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.snapdeal.component.MailDetails;
 import com.snapdeal.component.SessionDetails;
 import com.snapdeal.dao.Dao;
 import com.snapdeal.dto.RequestDetails;
@@ -28,6 +32,9 @@ public class DownloadServiceImpl implements DownloadService {
 	@Inject
 	@Named("sessionDetails")
 	SessionDetails sessionDetails;
+	
+	@Autowired
+	MailService mailService;
 
 	@Override
 	public void generateRequest(String cond, String status,	HttpServletResponse response) 
@@ -96,6 +103,13 @@ public class DownloadServiceImpl implements DownloadService {
 
 			}
 			response.getWriter().write(line.toString());
+			
+			mailService.setMailDetails(getMailDetails());
+			
+			ExecutorService executor = Executors.newFixedThreadPool(1);
+			executor.execute(mailService);
+			executor.shutdown();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -171,4 +185,19 @@ public class DownloadServiceImpl implements DownloadService {
 		return conditions;
 	}
 
+	private MailDetails getMailDetails()
+	{
+		MailDetails mailDetails = new MailDetails();
+		
+		mailDetails.setRecipients("mohit.gupta@snapdeal.com");
+		mailDetails.setSender("noreply@snapdeal.in");
+		mailDetails.setSubject("PCA Request Downloaded");
+		mailDetails.setCurrentDate(new Date());
+		mailDetails.setUsername(sessionDetails.getSessionUser().getUsername());
+		
+		mailDetails.setBody("Requests Downloaded from PCA at : "+mailDetails.getCurrentDate()
+				+" by user : "+ mailDetails.getUsername());
+		
+		return mailDetails;
+	}
 }

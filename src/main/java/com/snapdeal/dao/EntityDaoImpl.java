@@ -28,7 +28,6 @@ public class EntityDaoImpl implements EntityDao{
 			entityManager.merge(object);
 		}
 		else {
-			System.out.println("Entered");
 			try {
 				entityManager.persist(object);
 			} catch (Exception e) {
