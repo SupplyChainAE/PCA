@@ -36,35 +36,33 @@ public class UserController {
 	@Inject
 	@Named("sessionDetails")
 	SessionDetails sessionDetails;
-	
+
 	@Inject
 	@Named("warehouseService")
 	WarehouseService warehouseService;
 
 	@RequestMapping("/create")
-	public String addUser(ModelMap map)
-	{
+	public String addUser(ModelMap map) {
 		User user = new User();
 		List<Roles> userRoles = userService.getAllRoles();
-//		List<Warehouse> userWarehouse = warehouseService.getEnabledWarehouses();
-//		map.put("warehouses", userWarehouse);
+		List<Warehouse> userWarehouse = warehouseService.getEnabledWarehouses();
+		
+		map.put("warehouses", userWarehouse);
 		map.put("roles", userRoles);
 		map.put("user", user);
 		return "User/create";
 	}
 
 	@RequestMapping("/role/create")
-	public String addRoles(ModelMap map)
-	{
+	public String addRoles(ModelMap map) {
 		Roles role = new Roles();
 		map.put("role", role);
 		return "User/createRole";
 	}
 
-	@RequestMapping(value="/role/save",method=RequestMethod.POST)
-	public String saveRole(@ModelAttribute("role") Roles role,ModelMap map)
-	{
-		
+	@RequestMapping(value = "/role/save", method = RequestMethod.POST)
+	public String saveRole(@ModelAttribute("role") Roles role, ModelMap map) {
+
 		userService.saveOrUpdateRole(role);
 		Roles newRole = new Roles();
 		map.put("role", newRole);
@@ -73,48 +71,48 @@ public class UserController {
 	}
 
 	@RequestMapping("/save")
-	public String saveUser(@ModelAttribute("user") User user,ModelMap map,@RequestParam(value="role[]") Long[] userRoles
-			)
-	{
-		
-		if(userRoles != null && userRoles.length > 0 )
-		{
-			
+	public String saveUser(@ModelAttribute("user") User user, ModelMap map,
+			@RequestParam(value = "role[]") Long[] userRoles,
+			@RequestParam(value = "warehouse[]") Long[] userWarehouse) {
+
+		if (userRoles != null && userRoles.length > 0) {
+
 			List<Roles> finalRoles = new ArrayList<Roles>();
-			for(Long roleId : userRoles)
-			{
+			for (Long roleId : userRoles) {
 				Roles r = new Roles();
 				r.setId(roleId);
 				finalRoles.add(r);
 			}
-			if(user.getId() != null)
-			{
+			List<Warehouse> finalWarehouses = new ArrayList<Warehouse>();
+			for (Long whId : userWarehouse) {
+				Warehouse wh = warehouseService.findWarehouseByid(whId);
+				finalWarehouses.add(wh);
+			}
+			if (user.getId() != null) {
 				User persistedUser = userService.findUserById(user.getId());
 				persistedUser.setUserRoles(finalRoles);
-//				persistedUser.setPassword(persistedUser.getPassword());
-//				persistedUser.setUserWarehouses(finalWarehouses);
-//				persistedUser.setActiveWarehouse(user.getActiveWarehouse());
+				// persistedUser.setPassword(persistedUser.getPassword());
+				 persistedUser.setUserWarehouse(finalWarehouses);
+				// persistedUser.setActiveWarehouse(user.getActiveWarehouse());
 				persistedUser.setUserName(user.getUserName());
 				userService.saveOrUpdateUser(persistedUser);
-			}
-			else {
+			} else {
 				user.setUserRoles(finalRoles);
 				user.setEnabled(true);
-//				user.setCreatedBy(userId);	
-				
-//				user.setUserWarehouses(finalWarehouses);
-				
-				userService.saveOrUpdateUser(user);	
+				// user.setCreatedBy(userId);
+				user.setUserWarehouse(finalWarehouses);
+
+				userService.saveOrUpdateUser(user);
 			}
 			map.put("message", "User saved Successfully");
 			String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 			List<User> userList = userService.getUsersExceptLoggedIn(userName);
 			map.put("users", userList);
 			return "User/view";
-		}else {
+		} else {
 			List<Roles> userRolesList = userService.getAllRoles();
-//			List<Warehouse> userWarehouseList = warehouseService.getEnabledWarehouses();
-//			map.put("warehouses", userWarehouseList);
+			List<Warehouse> userWarehouseList = warehouseService.getEnabledWarehouses();
+			map.put("warehouses", userWarehouseList);
 			map.put("roles", userRolesList);
 			map.put("user", user);
 			map.put("edit", true);
@@ -124,17 +122,16 @@ public class UserController {
 	}
 
 	@RequestMapping("/view")
-	public String viewAllUser(ModelMap map)
-	{
-		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+	public String viewAllUser(ModelMap map) {
+		String userName = SecurityContextHolder.getContext()
+				.getAuthentication().getName();
 		List<User> userList = userService.getUsersExceptLoggedIn(userName);
 		map.put("users", userList);
 		return "User/view";
 	}
 
-	@RequestMapping(value="/edit/{id}",method=RequestMethod.GET)
-	public String editUser(@PathVariable("id") Long id,ModelMap map)
-	{
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+	public String editUser(@PathVariable("id") Long id, ModelMap map) {
 		User user = userService.findUserById(id);
 		List<Roles> userRoles = userService.getAllRoles();
 		List<Warehouse> userWarehouse = warehouseService.getEnabledWarehouses();
@@ -145,22 +142,22 @@ public class UserController {
 		return "User/create";
 	}
 
-	@RequestMapping(value="/disable/{id}",method=RequestMethod.GET)
-	public String disableUser(@PathVariable("id") Long id,ModelMap map)
-	{
+	@RequestMapping(value = "/disable/{id}", method = RequestMethod.GET)
+	public String disableUser(@PathVariable("id") Long id, ModelMap map) {
 		userService.disableUser(id);
-		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+		String userName = SecurityContextHolder.getContext()
+				.getAuthentication().getName();
 		List<User> userList = userService.getUsersExceptLoggedIn(userName);
 		map.put("users", userList);
 		map.put("message", "User disabled Successfully");
 		return "User/view";
 	}
 
-	@RequestMapping(value="/enable/{id}",method=RequestMethod.GET)
-	public String enableUser(@PathVariable("id") Long id,ModelMap map)
-	{
+	@RequestMapping(value = "/enable/{id}", method = RequestMethod.GET)
+	public String enableUser(@PathVariable("id") Long id, ModelMap map) {
 		userService.enableUser(id);
-		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+		String userName = SecurityContextHolder.getContext()
+				.getAuthentication().getName();
 		List<User> userList = userService.getUsersExceptLoggedIn(userName);
 		map.put("users", userList);
 		map.put("message", "User enabled Successfully");
@@ -168,14 +165,12 @@ public class UserController {
 	}
 
 	@RequestMapping("/checkUser")
-	public @ResponseBody String checkUser(@ModelAttribute("name") String userName)
-	{
+	public @ResponseBody
+	String checkUser(@ModelAttribute("name") String userName) {
 		boolean result = userService.checkUser(userName);
-		if(result)
-		{
+		if (result) {
 			return "success";
-		}
-		else{
+		} else {
 			return "failure";
 		}
 	}

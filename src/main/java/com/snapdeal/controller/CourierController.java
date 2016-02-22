@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.snapdeal.dao.Dao;
+import com.snapdeal.dao.EntityDao;
 import com.snapdeal.dto.Priority;
 import com.snapdeal.entity.BaseEntity;
 import com.snapdeal.entity.Courier;
@@ -33,19 +34,12 @@ public class CourierController {
 	@Inject
 	@Named("courierService")
 	CourierService courierService;
-//	
-//	@Inject
-//	@Named("shippingService")
-//	ShippingService shippingService;
-//	
-//	@Inject
-//	@Named("trackingNumbersService")
-//	TrackingNumbersService trackingNumbersService;
-//	
+
 	@Inject
 	@Named("warehouseService")
 	WarehouseService warehouseService;
 	
+
 	/** Loads the courier creation page **/
 	@RequestMapping("/create")
 	public String createCourier(ModelMap map){
@@ -107,41 +101,27 @@ public class CourierController {
 	}
 		
 		@RequestMapping("/savePriority")
-		public String savePriority(@RequestParam("id") Long[] idList,@RequestParam("priority") Long[] priorityList, ModelMap map){
+		public String savePriority(@RequestParam("id") Long[] idList,@RequestParam("priority") Long[] priorityList,
+				@RequestParam("load") Long[] loadList, ModelMap map){
 			int i = 0;
 			for (Long id : idList){
-				System.out.println(id);
-				System.out.println(priorityList[i]);
-				localDao.updatePriority(id,priorityList[i]);
+//				localDao.updatePriority(id,priorityList[i],loadList[i]);
+				Courier courier = courierService.findCourierByid(id);
+				courier.setPriority(priorityList[i]);
+				courier.setLoad(loadList[i]);
+				courierService.saveCourier(courier);
 				i++;
-				
 			}
-		/** Get all Enabled warehouse from the DB **/
-//		List<Courier> courier1 = courierService.getAllcourier();
-//		map.put("courier", courier1);
-			
+
 		map.put("message", "Data Saved Successfully");
 		return "Courier/priority";
 	}
 	
-	
-//	@RequestMapping("/getData")
-//	public @ResponseBody RequestDetails getData(@RequestParam("id") Long id,ModelMap map) throws ParseException{
-//		RequestDetails rd = localDao.getRequestDataBasedonID(id);
-//		
-//	    return rd;
-//		
-//	}
-//	
 
-	
 	
 	@RequestMapping("/priority")
 	public String priority(ModelMap map)
 	{
-//		List<Courier> courier = courierService.getCourierByType(type);
-//		map.put("courier", courier);
-//		System.out.println("courier"+ courier.get(0));
 		return "Courier/priority";
 	}
 	

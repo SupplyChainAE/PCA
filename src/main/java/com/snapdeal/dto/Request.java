@@ -11,6 +11,8 @@ public class Request {
 	private String sellerName;
 	private String requestStatus;
 	private String createdOn  ;
+	private String processed;
+	
 	public String getRequestId() {
 		return requestId;
 	}
@@ -47,6 +49,12 @@ public class Request {
 	}
 	public void setId(Long id) {
 		Id = id;
+	}
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+	public String getProcessed() {
+		return processed;
 	}
 	
 	

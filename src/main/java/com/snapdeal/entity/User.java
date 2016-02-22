@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +34,8 @@ public class User extends BaseEntity implements UserDetails{
 	@Column(name="enabled")
 	private boolean enabled = true;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Roles> userRoles;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -105,5 +108,11 @@ public class User extends BaseEntity implements UserDetails{
 
 	public List<Warehouse> getUserWarehouse() {
 		return userWarehouse;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "User:["+userName+",{"+userRoles+"},{"+userWarehouse+"}]";
 	}
 }

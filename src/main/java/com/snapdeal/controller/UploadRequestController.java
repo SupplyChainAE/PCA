@@ -120,7 +120,7 @@ public class UploadRequestController {
 					{
 						counter++;
 						String [] data1 = line.split(splitBy);
-						  
+						System.out.println(data1.length);System.out.println(data1[15]);System.out.println(data1[16]);  
 						if (data1[0].equals("")){
 							errorLine = "Request ID is Blank : Line No "+ counter +"\n";
 							response.getWriter().write(errorLine);
@@ -186,7 +186,36 @@ public class UploadRequestController {
 								error1=1;
 							}
 						}
-												
+						if (data1[1].equals("")){
+							errorLine = "Request Status is Blank : Line No "+ counter +"\n";
+							response.getWriter().write(errorLine);
+							error1=1;
+						}	
+						
+						if(data1[1].equals("Dispatched"))
+						{
+							if(data1.length != 17)
+							{
+								errorLine = "Dispatched Date is Blank : Line No "+ counter +"\n";
+								response.getWriter().write(errorLine);
+								error1=1;
+							}
+							else
+							{
+								try
+								{
+									SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy");
+									Date dispatchDate = df.parse(data1[16]);
+									
+								}
+								catch(Exception e)
+								{
+									errorLine = "Dispatched Date Format is Invalid : Line No "+ counter +"\n";
+									response.getWriter().write(errorLine);
+									error1=1;
+								}
+							}
+						}
 						try{
 							
 							Long para1 =   Long.parseLong(data1[5].trim());
@@ -439,7 +468,7 @@ public class UploadRequestController {
 	@RequestMapping("/downloadTemplate")
 	public void downloadRequest(ModelMap map,HttpServletResponse response) throws ParseException{
 		try {
-			String line="Request ID,Request Status,warehouse Code,AWB,Courier Code,6.5x6.5,8.5*11.5,11.5x13.5,13.5x16,15.5x18,17.5x19,20x22.5,22.5x24.5,Tape,Sticker,Comment \n";
+			String line="Request ID,Request Status,warehouse Code,AWB,Courier Code,6.5x6.5,8.5*11.5,11.5x13.5,13.5x16,15.5x18,17.5x19,20x22.5,22.5x24.5,Tape,Sticker,Comment,Dispatch Date(dd-mm-yyyy) \n";
 			response.setContentType("text/csv");
 			response.setHeader("Content-Disposition", "attachment; filename=Request.csv");
 			response.setContentLength(line.length());

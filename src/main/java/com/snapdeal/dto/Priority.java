@@ -8,6 +8,8 @@ public class Priority {
 	private String Code ;
 	private String  Name;
 	private Long priority ;
+	private Long load;
+	
 	public Long getId() {
 		return Id;
 	}
@@ -31,6 +33,12 @@ public class Priority {
 	}
 	public void setPriority(Long priority) {
 		this.priority = priority;
+	}
+	public void setLoad(Long load) {
+		this.load = load;
+	}
+	public Long getLoad() {
+		return load;
 	}
 	
 			

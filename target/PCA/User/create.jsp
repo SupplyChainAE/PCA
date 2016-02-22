@@ -143,6 +143,26 @@ pageEncoding="UTF-8"%>
 												<option value="${role.id}">${role.role}</option>
 											</c:if>
 										</c:forEach>
+										
+										</select>
+										<br><br>
+										<label>Warehouse : </label>
+										 <select name="warehouse[]"
+										class="form-control required" id ="warehouse" multiple="multiple"
+										data-rel="chosen" required>
+										
+										<c:forEach items="${warehouses}" var="warehouse">
+											<c:set var="found" value="false" />
+											<c:forEach var="savedWh" items="${user.userWarehouse}">
+												<c:if test="${warehouse.id eq savedWh.id}">
+													<option value="${warehouse.id}" selected="selected">${warehouse.name}</option>
+													<c:set var="found" value="true" />
+												</c:if>
+											</c:forEach>
+											<c:if test="${not found}">
+												<option value="${warehouse.id}">${warehouse.name}</option>
+											</c:if>
+										</c:forEach>
 										</select>
 										
 										<div class="control-groups" style="margin-top: 20px;">	

@@ -171,6 +171,15 @@ public class DownloadServiceImpl implements DownloadService {
 			}	
 		}
 		
+		if (!status.equals("Request Created")){
+			if (conditions.equals("")){
+				conditions = "where processed != NULL ";
+			}
+			else {
+				conditions = conditions +" and processed != NULL ";
+			}	
+		}
+		
 		if (!dateRange.equals("")){
 			String[] parts = dateRange.split("-");
 			if (conditions.equals("")){
@@ -188,8 +197,11 @@ public class DownloadServiceImpl implements DownloadService {
 	private MailDetails getMailDetails()
 	{
 		MailDetails mailDetails = new MailDetails();
+//		String[] recipients = {"mohit.gupta@snapdeal.com","harshit.gupta@snapdeal.com"};
+		String[] recipients = {"mohit.gupta@snapdeal.com","dharmendar.kumar@snapdeal.com","virender.sharma@snapdeal.com","deepak.batra@snapdeal.com","jitendra.singh@snapdeal.com"};
 		
-		mailDetails.setRecipients("mohit.gupta@snapdeal.com");
+		mailDetails.setRecipients(recipients);
+		
 		mailDetails.setSender("noreply@snapdeal.in");
 		mailDetails.setSubject("PCA Request Downloaded");
 		mailDetails.setCurrentDate(new Date());

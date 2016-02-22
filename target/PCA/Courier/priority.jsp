@@ -22,7 +22,7 @@ pageEncoding="UTF-8"%>
 					
 					$("#courierBody").empty();
 					for ( var i = 0; i < result.length; i++) {
-						$("#courierBody").append("<tr><td class=\"hidden\"><input type=\"text\" name=\"id\" value=" + result[i].id + " ></input></td><td  name = \"code\">"+ result[i].code+"</td name = \"name\"><td>"+result[i].name+"</td><td><input type=\"text\" class=\"priority\" name=\"priority\" onkeypress=\"if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;\" value=" +result[i].priority +"></input> </td></tr>");
+						$("#courierBody").append("<tr><td class=\"hidden\"><input type=\"text\" name=\"id\" value=" + result[i].id + " ></input></td><td  name = \"code\">"+ result[i].code+"</td name = \"name\"><td>"+result[i].name+"</td><td><input type=\"text\" class=\"priority\" name=\"priority\" onkeypress=\"if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;\" value=" +result[i].priority +"></input> </td><td><input type=\"text\" class=\"priority\" name=\"load\" value=\""+ result[i].load+"\"></input></td></tr>");
 					}
 			}
 			
@@ -89,7 +89,7 @@ pageEncoding="UTF-8"%>
 				
 				$("#courierBody").empty();
 				for ( var i = 0; i < result.length; i++) {
-					$("#courierBody").append("<tr><td class=\"hidden\"><input type=\"text\" name=\"id\" value=" + result[i].id + " ></input></td><td  name = \"code\">"+ result[i].code+"</td name = \"name\"><td>"+result[i].name+"</td><td><input type=\"text\" class=\"priority\" name=\"priority\" onkeypress=\"if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;\" value=" +result[i].priority +"></input> </td></tr>");
+					$("#courierBody").append("<tr><td class=\"hidden\"><input type=\"text\" name=\"id\" value=" + result[i].id + " ></input></td><td  name = \"code\">"+ result[i].code+"</td name = \"name\"><td>"+result[i].name+"</td><td><input type=\"text\" class=\"priority\" name=\"priority\" onkeypress=\"if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;\" value=" +result[i].priority +"></input> </td><td><input type=\"text\" class=\"priority\" name=\"load\" value=\""+ result[i].load+"\"></td></tr>");
 				}
 		}
 	});
@@ -111,7 +111,7 @@ pageEncoding="UTF-8"%>
 				<div class="span12">
 <!-- 						<div class="widget widget-table action-table"> -->
             			<div class="widget-header"> <i class="icon-th-list"></i>
-              			<h3>Couriers Priority</h3>
+              			<h3>Courier Priority</h3>
            				 </div>	
            				   <div class="widget-content">
            				   <input type="hidden" id="message" value="${message}" />
@@ -123,10 +123,10 @@ pageEncoding="UTF-8"%>
 												<option value="SURFACE">SURFACE</option>
 											</select>
 									<button type="submit" style="margin-bottom: 5px; margin-left:5px " onclick="getPriorityData();" class ="btn btn-primary" >Submit</button>
+           				 
            				 <form name="priority" action='<c:url value="/Courier/savePriority" />' method ="post"
 									id="form">  
-						<table
-								id ="dataTable" 
+						<table	id ="dataTable" 
 								class="table table-striped table-bordered bootstrap-datatable datatable">
 							<thead>
 								<tr>
@@ -134,6 +134,7 @@ pageEncoding="UTF-8"%>
 									<th>Courier Name</th>
 									<th>Code</th>
 									<th>Priority</th>
+									<th>Load</th>
 							</tr>
 							</thead>
 							<tbody id ="courierBody">

@@ -104,10 +104,22 @@ pageEncoding="UTF-8"%>
 													<td>${SellerRequest1.sellerCode}</td>
 													<td>${SellerRequest1.sellerName}</td>
 													<td align="center">
-											
-														<button type="submit" class="btn btn-success edit" id="${SellerRequest1.id}" onclick="getModalData(${SellerRequest1.id})" >Show Details</button>
-														
-											
+	<c:choose>	
+	<c:when test="${SellerRequest1.requestStatus == 'Request Created'}">
+		<c:if test="${SellerRequest1.processed == 'Failed'}">
+			<button type="submit" class="btn btn-danger edit" id="${SellerRequest1.id}" onclick="getModalData(${SellerRequest1.id})" >Failed</button>
+		</c:if>
+		<c:if test="${empty SellerRequest1.processed}">
+			<button type="submit" class="btn btn-default edit" id="${SellerRequest1.id}" onclick="getModalData(${SellerRequest1.id})" >In Progress</button>
+		</c:if>
+		<c:if test="${SellerRequest1.processed == 'Success'}">
+			<button type="submit" class="btn btn-success edit" id="${SellerRequest1.id}" onclick="getModalData(${SellerRequest1.id})" >Success</button>
+		</c:if>
+	</c:when>
+	<c:otherwise>										
+		<button type="submit" class="btn btn-success edit" id="${SellerRequest1.id}" onclick="getModalData(${SellerRequest1.id})" >Show Details</button>
+	</c:otherwise>													
+	</c:choose>							
 										</td>
 													
 													<td>${SellerRequest1.createdOn}</td>

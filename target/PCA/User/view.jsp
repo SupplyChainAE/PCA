@@ -35,6 +35,7 @@ pageEncoding="UTF-8"%>
 								<tr>
 									<th>User Name</th>
 									<th>Roles</th>
+									<th>Warehouse</th>
 									<th>Enabled</th>
 									<th>Action</th>
 								</tr>
@@ -45,6 +46,10 @@ pageEncoding="UTF-8"%>
 										<td>${user.userName}</td>
 										<td><c:forEach var="role" items="${user.userRoles}">
 										${role.role}<br />
+											</c:forEach>
+											</td>
+											<td><c:forEach var="warehouse" items="${user.userWarehouse}">
+										${warehouse.name}<br />
 											</c:forEach>
 											</td>
 										<td><c:choose>

@@ -41,7 +41,7 @@ public class Dao {
 			connection = (Connection) dataSourceLocal.getConnection();
 			statement = (Statement) connection.createStatement();
 
-			String query = "SELECT id, concat_ws('/',sellercode,created,id)as requestid,SellerCode,seller_name,requeststatus,created FROM Seller_Request sr " +condition ;
+			String query = "SELECT id, concat_ws('/',sellercode,created,id)as requestid,SellerCode,seller_name,requeststatus,created,processed FROM Seller_Request sr " +condition ;
 			System.out.println(query);
 			ResultSet resultSet = statement.executeQuery(query);
 			while (resultSet.next()){
@@ -52,6 +52,7 @@ public class Dao {
 				req.setSellerCode(resultSet.getString("SellerCode"));
 				req.setSellerName(resultSet.getString("seller_name"));
 				req.setCreatedOn(resultSet.getString("created"));
+				req.setProcessed(resultSet.getString("processed"));
 				requestList.add(req);
 			}
 			resultSet.close();
@@ -265,11 +266,11 @@ public class Dao {
 			String query = "";
 			String[] id =data[0].split("/");
 			System.out.println("length" + data.length);
-			if (data.length == 14){
+			if (data.length == 17){
 				query = "update Seller_Request set requeststatus = '"+ data[1] +"', "
 				+"para1d = "+ data[5] +"  , para2d = "+ data[6] +" ,  para4d = "+ data[7] +" , " +
 				"para5d = "+ data[8] + ", para6d = "+ data[9] + " , para7d = "+ data[10] +" , para8d = "+ data[13] +", para10d = "+ data[11] +" , para11d = " + data[12] +" , para9d = "+ data[14] +" , comment = '"+data[15] +"' , "+ 
-				"courierCode = " + courierId +" , AWB = '" + data[3] + "' , mail_flag = 0 , updated = '"+ date + "' , warehouse  = " + warehouseId +" , userId =" + userId + " where id = "+ id[2] ;
+				"courierCode = " + courierId +" , AWB = '" + data[3] + "' , mail_flag = 0 , updated = '"+ date + "' , warehouse  = " + warehouseId +" , userId =" + userId + " dispatch_date='"+data[16]+"' where id = "+ id[2] ;
 				statement.executeUpdate(query);
 				query="insert into Request_History(requestid,requeststatus,comment, created) values("+ id[2] +",'"+ data[1] +"','"+ data[15] +"','"+ date +"' )";
 				System.out.println(query);
@@ -281,8 +282,8 @@ public class Dao {
 			else{
 				query = "update Seller_Request set requeststatus = '"+ data[1] +"', "
 				+"para1d = "+ data[5] +"  , para2d = "+ data[6] +",   para4d = "+ data[7] +" , " +
-				"para5d = "+ data[8] + ", para6d = "+ data[9] + " , para7d = "+ data[10] +" , para8d = " + data[13] +", para10d = "+ data[11] +" , para11d = " + data[12] +" , para9d = "+ data[14] +" , comment = ' '  , "+ 
-				" courierCode = " + courierId +" , AWB = '" + data[3] + "' , mail_flag = 0, updated = '"+ date + "' , warehouse  = " + warehouseId +" , userId =" + userId + " where id = "+ id[2] ;
+				"para5d = "+ data[8] + ", para6d = "+ data[9] + " , para7d = "+ data[10] +" , para8d = " + data[13] +", para10d = "+ data[11] +" , para11d = " + data[12] +" , para9d = "+ data[14] +" , comment = ''  , "+ 
+				" courierCode = " + courierId +" , AWB = '" + data[3] + "' , mail_flag = 0, updated = '"+ date + "' , warehouse  = " + warehouseId +" , userId =" + userId + " dispatch_date='' where id = "+ id[2] ;
 				statement.executeUpdate(query);
 				query="insert into Request_History(requestid,requeststatus,comment, created) values("+ id[2] +",'"+ data[1] +"',' ','"+ date +"' )";
 				System.out.println(query);
@@ -546,12 +547,11 @@ public class Dao {
 		Connection connection = null;
 		Statement statement = null;
 		List<Priority> prList =new ArrayList<Priority>();
-		//		java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
-		//		
+	
 		try{
 			connection = (Connection) dataSourceLocal.getConnection();
 			statement = (Statement) connection.createStatement();
-			String query = "Select id,code,name,priority from couriers where type = '"+ type +"' order by priority";
+			String query = "Select id,code,name,priority,load_limit from couriers where type = '"+ type +"' order by priority";
 			System.out.println(query);
 			ResultSet resultSet = statement.executeQuery(query);
 			while (resultSet.next()){
@@ -560,6 +560,7 @@ public class Dao {
 				pr.setCode(resultSet.getString("code"));
 				pr.setName(resultSet.getString("name"));
 				pr.setPriority(resultSet.getLong("priority"));
+				pr.setLoad(resultSet.getLong("load_limit"));
 				prList.add(pr);
 			}
 		}
@@ -622,14 +623,14 @@ public class Dao {
 
 	
 	
-	public void updatePriority(Long id, Long priority) {
+	public void updatePriority(Long id, Long priority,Long load) {
 
 		Connection connection = null;
 		Statement statement = null;
 		try{
 			connection = (Connection) dataSourceLocal.getConnection();
 			statement = (Statement) connection.createStatement();
-			String query = "Update  couriers set priority = " + priority + " where id = "+ id ;
+			String query = "Update  couriers set priority = " + priority + ", load_limit = "+ load +" where id = "+ id ;
 			statement.executeUpdate(query);
 		}
 		catch(SQLException se){

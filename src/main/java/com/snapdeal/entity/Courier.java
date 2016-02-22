@@ -26,6 +26,21 @@ public class Courier extends BaseEntity {
 	@Column(name="priority")
 	private Long priority=0L;
 	
+	@Column(name="load_limit")
+	private Long load = 0L;
+	
+	@Column(name="current_load")
+	private Long currentLoad =0L;
+	
+	@Column(name="code",length=200,nullable=false)
+	private String code;
+	
+	@Column(name="enabled")
+	private Boolean enabled = false;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Warehouse> warehouseList;
+	
 	public Long getPriority() {
 		return priority;
 	}
@@ -62,13 +77,19 @@ public class Courier extends BaseEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	@Column(name="code",length=200,nullable=false)
-	private String code;
-	@Column(name="enabled")
-	private Boolean enabled = false;
-	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Warehouse> warehouseList;
 	public String getName() {
 		return name;
+	}
+	public void setLoad(Long load) {
+		this.load = load;
+	}
+	public Long getLoad() {
+		return load;
+	}
+	public void setCurrentLoad(Long currentLoad) {
+		this.currentLoad = currentLoad;
+	}
+	public Long getCurrentLoad() {
+		return currentLoad;
 	}
 }

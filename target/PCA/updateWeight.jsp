@@ -48,7 +48,6 @@
 										class="table table-striped table-bordered bootstrap-datatable datatable">
 							<thead>
 								<tr>
-									<th class="hidden">id</th>
 									<th>Parameter Name</th>
 									<th>Weight</th>
 									
@@ -56,15 +55,16 @@
 							</thead>
 							<tbody>
 									<c:forEach var="parameterWeight" items="${parameterWeight}">
-									
+									<c:if test="${parameterWeight.parameter != 'para3' }">
 									<tr>
-									<td class="hidden "><input type="text" name="id"
-														value="${parameterWeight.id}"></input>  ${parameterWeight.id}</td>
-									<td>${parameterWeight.parameterName}</td>
+									<td class="hidden "><input type="text" name="para"
+															value="${parameterWeight.parameter}"></input></td>
+									<td>${parameterWeight.name}</td>
 										<td><input type="text" required="Required" name="weight"
-														value="${parameterWeight.weight}"></input>
+															value="${parameterWeight.weight}"></input>
 													</td>
 									</tr>
+									</c:if>
 									</c:forEach>
 																
 							</tbody>

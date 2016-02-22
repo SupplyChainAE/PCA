@@ -92,7 +92,8 @@
 						<li><a href="<c:url value="/Mapping/pincodeWarehouse"/>">Pincode Warehouse Mapping</a></li>
 						<li><a href="<c:url value="/Mapping/courierAwb"/>">Courier Awb Mapping</a></li>
 						<li><a href="<c:url value="/Mapping/pincodeCourier"/>">Courier Pincode Mapping</a></li>
-						<li><a href="<c:url value="/Mapping/parameterPrice"/>">Parameters Price Mapping</a></li>
+						<li><a href="<c:url value="/Mapping/parameterPrice"/>">Parameter Price Mapping</a></li>
+						<li><a href="<c:url value="/Mapping/parameterWeight"/>">Parameter Weight Mapping</a></li>
 						
 					</ul>
 				</li>

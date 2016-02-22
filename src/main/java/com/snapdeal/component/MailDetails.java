@@ -10,7 +10,7 @@ public class MailDetails {
 	
 	private Date currentDate;
 	
-	private String recipients;
+	private String[] recipients;
 	
 	private String subject;
 	
@@ -28,10 +28,11 @@ public class MailDetails {
 	public void setCurrentDate(Date currentDate) {
 		this.currentDate = currentDate;
 	}
-	public String getRecipients() {
+	
+	public String[] getRecipients() {
 		return recipients;
 	}
-	public void setRecipients(String recipients) {
+	public void setRecipients(String[] recipients) {
 		this.recipients = recipients;
 	}
 	public String getSubject() {
